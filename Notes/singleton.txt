@@ -1,0 +1,36 @@
+SINGLETON-a pattern in object oriented programming-it means one and only one copy of a object.
+The only exception to this rule is the $scope object which is differnet for different controllers.This is because your angular module
+has a root scope and every time you create a controller and the root scope provides a child $scope for each controller.
+
+Let us take an example and prove that $log object is a singleton:
+
+
+
+.JS:
+//controller attached to one route 1
+myApp.controller("myController",function($scope,$log){
+    $log.main="hello from main page";
+     $scope.name="akash";
+    console.log($log);
+     
+})
+
+//controller attached to route 2
+myApp.controller("secondController",function($scope,$log,$routeParams){
+    
+    $log.second="hello from second";
+    console.log($log);
+      
+})
+
+OUTPUT:
+when user is in main page:
+o/p : object{main:"hello from main page"}
+
+when user routes to second page:
+o/p :object{main:"hello from the main page", second:"hello from the second page"}
+So we see that we dont get two different versions of the log object even though they are attached to different controllers.
+There is only one single $log object.So it is a singleton.
+
+
+When you are creating your own service you are creating a singleton.A piece of data or info that can be shared across pages in your SPA.

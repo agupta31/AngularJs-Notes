@@ -1,0 +1,97 @@
+HOW DIGETS LOOP WORKS:
+ <div id="container">
+
+          <div ng-controller="myController">
+
+             <div>
+                <label>What is your twitter handle?</label>
+                <input type="text" ng-model="username">
+
+             </div>
+             <hr/>
+             <h1>twitter handle {{ formattedName() }}</h1>
+         </div>
+
+    </div>
+
+
+SCRIPT:
+var myApp=angular.module("myConnector",[]);
+
+myApp.controller("myController",["$scope","$filter",function($scope,$filter){
+    
+    $scope.username="";
+    $scope.formattedName= function(){
+    	return $filter("lowercase")($scope.username);
+    }
+ //watcher used by angular to keep track of all the variables attached to the angular context(i.e variables
+used by the model/view)
+//here we are watching the variable username and angular will run the digest loop to update the username variable
+//to its new value.
+
+    $scope.$watch('username',function(newValue,oldValue){
+    	console.info("watch");
+    	console.log("old value: "+oldValue)
+    	console.log("new Value:"+newValue);
+    });
+
+
+}]);
+
+
+
+
+WATCHING IS LIMITED ONLY TO THE ANGULAR CONTEXT.ANY CHANGES TO THE VARIABLES OUTSIDE THE ANGULAR CONTEXT WONT
+BE WATCHED BY ANGULAR.
+EXAMPLE:
+
+var myApp=angular.module("myConnector",[]);
+
+myApp.controller("myController",["$scope","$filter",function($scope,$filter){
+    
+    $scope.username="";
+    $scope.formattedName= function(){
+    	return $filter("lowercase")($scope.username);
+    }
+
+    $scope.$watch('username',function(newValue,oldValue){
+    	console.info("watch");
+    	console.log("old value: "+oldValue)+
+    	console.log("new Value:"+newValue);
+    });
+//this is a normal JS function runnig outside the angular context which changes the variable $scope.username.
+Angular will not be able to change
+//$scope.username as it it outside the angular environment!
+    setTimeout(function(){
+      $scope.username="myhandler";
+      console.log("scope changed");
+    },3000)
+
+}]);
+
+
+HOW TO GET RID OF THIS?
+var myApp=angular.module("myConnector",[]);
+
+myApp.controller("myController",["$scope","$filter",function($scope,$filter){
+    
+    $scope.username="";
+    $scope.formattedName= function(){
+    	return $filter("lowercase")($scope.username);
+    }
+
+    $scope.$watch('username',function(newValue,oldValue){
+    	console.info("watch");
+    	console.log("old value: "+oldValue)+
+    	console.log("new Value:"+newValue);
+    });
+
+    setTimeout(function(){
+      //apply tells angular to execute the code inside the angular context
+        $scope.$apply(function(){
+           $scope.username="myhandler";
+           console.log("scope changed");
+       });
+    },3000)
+
+}]);

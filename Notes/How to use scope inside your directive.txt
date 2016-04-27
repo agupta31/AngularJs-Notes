@@ -1,0 +1,178 @@
+USING SCOPE INSIDE THE DIRECTIVE:
+
+
+WHAT EXACLTY ARE WE DOING HERE?
+we know that when we are using a directive inside a page then that directive is assigned the same controller as the page because the
+directive is a child of the page.So any properties assigned using the scope object inside the controller will be available to the 
+directive and you can use it in your templateUrl to interpolate that value from the controller.
+
+lets see what we are talking about:
+
+JS file:
+var myApp=angular.module("myConnector",["ngRoute]);
+
+myApp.config(function($routeProvider){
+
+    $routeProvider 
+            .when("/",{
+                        templateUrl:"C:/Users/akash/Desktop/ang/main.htm",
+                         controller:"myController"
+                 }
+
+             .when("/second",{
+                             templateUrl:"C:/Users/akash/Desktop/ang/second.htm",
+                             controller:"secondController"
+               
+                   }
+});
+
+    myApp.controller("myController",["$scope",function($scope){
+
+
+     
+}])
+
+
+    myApp.controller("secondController",["$scope",function($scope){
+
+               
+
+}])
+
+//creating directive
+
+  myApp.directive("searchResult",function(){
+
+           return {
+                  templateUrl:"C:/Users/akash/Desktop/ang/searchResult.htm",
+
+        }
+}
+
+
+HTML FILES:
+second.htm:
+   <div class="list-items">
+//we are calling our directive in this page.So this directive will be a child of this page and will be assigned the same controller
+//"secondController"
+
+    <search-result></search-result>
+
+  </div>
+  
+
+main.htm:
+<div class="list-items">
+//we are calling our directive in this page.So this directive will be a child of this page and will be assigned the same controller
+//"myController"
+    <div search-result></div>
+
+  </div>
+  
+
+searchResult.htm:this page contains the template used by our directive
+
+<a href="#" class="list-group-item active">
+     <h4 class="list-group-item-heading">john doe</h4>
+     <p class="list-group-item-text"> 135 royal drive</p>
+</a>
+
+
+after loading the main page we will see the above tempalte on the main page as well as the second page as both the pages have called
+the directive.
+
+
+CHANGES WE CAN MAKE:
+JS:
+ myApp.controller("myController",["$scope",function($scope){
+
+    $scope.name="akash gupta";
+    $scope.address="12002 diploma drive"
+     
+}])
+
+
+
+searchResult.htm:this page contains the template used by our directive
+
+//since the directive is able to use the scope of the main.htm page we can interpolate the value in this view as well.
+<a href="#" class="list-group-item active">
+     <h4 class="list-group-item-heading">{{name}}</h4>
+     <p class="list-group-item-text"> {{address}}</p>
+</a>
+
+
+
+THE ABOVE METHOD IS NOT GOOD:this is because several pages may use this directive and since every controller has it's own version
+of the scope if you don't define a $scope.name and $scope.address in each of the controllers you won't see anything being displayed
+on those respective pages.
+
+
+
+
+SOLUTION??
+
+DEFINE A SCOPE INSIDE THE DIRECTIVE ITSELF:
+JS:
+myApp.controller("myController",function($scope,$log){
+    
+      $scope.name="akash gupta";
+      $scope.address="12002 diploma drive";
+   
+    })
+  
+     
+
+
+myApp.controller("secondController",function($scope,$log){
+   
+         $scope.name="badhrel";
+         $scope.address="bagnan";
+    })
+
+
+
+
+myApp.directive("searchResult",function(){
+      return {
+          templateUrl:"C:/Users/akash/Desktop/ang/searchRes.htm",
+          replace:'true',
+          scope:{
+        //this is how you are importing the above scopes inside the directive
+                personName:"@",
+                personAddress:"@"
+          }
+    
+            
+      }
+    
+})
+
+
+
+HTML FILES:
+second.htm:
+   <div class="list-items">
+//we are calling our directive in this page.So this directive will be a child of this page and will be assigned the same controller
+//"secondController"
+    <search-result person-name="{{name}}" person-address="{{address}}"></search-result>
+
+  </div>
+  
+
+main.htm:
+<div class="list-items">
+//we are calling our directive in this page.So this directive will be a child of this page and will be assigned the same controller
+//"myController"
+    <div search-result person-name="{{name}}" person-address="{{address}}"></div>//setting person-name and person-address to the
+        //interpolated values from the model
+
+  </div>
+  
+
+searchResult.htm:this page contains the template used by our directive
+
+<a href="#" class="list-group-item active">
+     <h4 class="list-group-item-heading">{{personName}}</h4>
+     <p class="list-group-item-{{personAddress}}</p>
+</a>

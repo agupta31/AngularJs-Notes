@@ -1,0 +1,57 @@
+SCENARIO WHERE THERE IS A CONFLICT DUE TO THE GLOBAL NAMESPACE:
+
+<body>
+        
+     <h1 data-reply="hello back">Hello world</h1>
+    
+        <script type="text/javascript" src="jquery-2.2.1.js"></script>
+         <script type="text/javascript" src="angular.min.js"></script>
+       <script type="text/javascript" src="utility.js"></script>
+        <script type="text/javascript" src="angScript.js"></script>
+       
+       
+</body>
+
+
+utility.js:
+
+var person="steve";
+
+function logPerson(){
+    console.log(person);
+}
+
+
+angScript.js:
+
+var person="akash";
+
+logPerson();
+
+OUTPUT:
+akash //this is because of gloabal namespace conflict.Utility.js is run first.Person is
+assigned "steve"-logPerson() is called from angScript.js .However,there is another variable
+with the same name person.So JS displays that.
+
+HOW TO AVOID THIS?
+JS DOES NOT HAVE A NAMESPACE BUT IT CAN IMPLEMENT IT BY USING THE CONCEPT OF OBJECT-we
+wrap variables inside different objects.
+
+EXAMPLE:
+
+utility.js:
+//creating my own steve object which will hold its own person variable.
+var steveObj={};
+
+steveObj.person="steve";
+
+steveObj.getName=function(){
+    console.log(this.person)
+}
+
+
+angscript.js
+
+var person="akash";
+
+steveObj.getName();

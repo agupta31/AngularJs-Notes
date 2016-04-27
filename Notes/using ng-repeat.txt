@@ -1,0 +1,156 @@
+INDEX.HTML:
+
+<!doctype html>
+<!-- binding this entire html view to the variable myApp-->
+<html lang="en" ng-app="myConnector">
+<head>
+
+   <title>This is a javascript page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+   
+         
+         
+</head>
+
+<body>
+        <nav>
+         
+          <a href="#/first">Main Page</a>
+            <a href="#/second">Second page</a>
+        </nav>
+     <div id="container">
+           
+          <div ng-view></div>
+    </div>
+    
+<script type="text/javascript" src="https://code.angularjs.org/1.5.0-rc.2/angular.js"></script>
+<script type="text/javascript" src="https://code.angularjs.org/1.5.0-rc.2/angular-route.min.js"></script>
+
+        <script type="text/javascript" src="angScript.js"></script>
+    
+       
+       
+</body>
+  
+</html>
+
+
+
+MAIN.HTM:
+<label>Search</label>
+
+<input type="text" value="Doe">
+
+<h3>Search results</h3>
+
+<div class="list-group" >
+    <search-results people-object="person" get-full-details-obj="getFullDetails(aperson)"
+                ng-repeat="person in people"></search-results>
+
+
+</div>
+
+
+
+SEARCHRES.HTM- directive's template
+ <a href="#" class="list-group-item active">
+     <h4 class="list-group-item-heading">{{peopleObject.name}}</h4>
+     <p class="list-group-item-text"> 
+          
+       {{getFullDetailsObj({aperson:peopleObject})}}
+         
+     </p>
+    
+</a>
+
+
+
+
+ANGSCRIPT.JS
+var myApp=angular.module("myConnector",["ngRoute"]);
+
+
+  myApp.config(function($routeProvider){
+        
+      
+      $routeProvider
+      
+            .when("/first",{
+                     templateUrl:"C:/Users/akash/Desktop/ang/main.htm",
+                     controller:"myController"
+                  
+                  
+                  })
+      
+             .when("/second",{
+                 
+                      templateUrl:"C:/Users/akash/Desktop/ang/second.htm",
+                       controller:"secondController"             
+             })
+      
+  });
+
+
+
+myApp.controller("myController",function($scope,$log){
+    
+      $scope.people=[
+          {
+          
+              name:"akash",
+              schoolName:"xavier's",
+              company:"infosys",
+              age:26
+              
+          },
+    
+           {
+          
+              name:"badhrel",
+              schoolName:"bagnan high",
+              company:"infosys",
+              age:29
+              
+          },
+           
+           {
+          
+              name:"didi",
+              schoolName:"trinamool congress",
+              company:"jaligiri",
+              age:58
+              
+          }
+          
+    ]
+        
+        
+      $scope.getFullDetails=function(person){
+          
+             return person.schoolName+" "+person.company+" "+person.age;
+      }
+        
+
+       
+    });
+  
+     
+myApp.controller("secondController",function($scope,$log){ });
+
+myApp.directive("searchResults",function(){
+    
+       return {
+           
+              templateUrl:"C:/Users/akash/Desktop/ang/searchRes.htm",
+              replace:true,
+           
+                scope: {
+                     peopleObject:"=",
+                     getFullDetailsObj:"&"
+                      }
+               
+              }
+     
+});
+
+

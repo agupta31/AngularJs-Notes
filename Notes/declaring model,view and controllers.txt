@@ -1,0 +1,50 @@
+HTML:
+<!doctype html>
+<!-- binding this entire html view to the variable myApp-->
+<html lang="en" ng-app="viewApp">
+<head>
+
+   <title>This is a javascript page</title>
+    
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" 
+</head>
+
+<body>
+        
+     <div id="container">
+<!--  this view has will now be controlled inside the mainController-->
+          <div ng-controller="mainController">
+          
+           <h1>hello world</h1>
+          </div>
+         
+    </div>
+    
+        <script type="text/javascript" src="jquery-2.2.1.js"></script>
+         <script type="text/javascript" src="angular.min.js"></script>
+       <script type="text/javascript" src="utility.js"></script>
+        <script type="text/javascript" src="angScript.js"></script>
+       
+       
+</body>
+  
+</html>
+
+
+SCRIPT:
+
+//myApp now points t the html view it is bound to
+//my app is an angular module so it will have access to all the methods
+//of that module.
+var myApp=angular.module("viewApp",[]);
+
+//declared a controller with the name 'mainController' which takes
+//a function as a parameter.
+//this is the controller for my view(one that binds the view and model)
+myApp.controller("mainController",function(){
+    //inside this will be the model and the view will be the one
+    //declared inside the html page with the custome attribute ng-controller
+    
+});
+
+

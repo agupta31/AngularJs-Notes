@@ -1,0 +1,48 @@
+HOW TO GET DATA FROM AN API/DATABASE IN ANGULAR?
+
+USING $http.get:
+
+$http.get("/api")
+//result is whatever you get back from the API
+     .success(function(result){
+//store it in a angular variable
+         $scope.rules=result;
+})
+//if error occurs then we handle it like this.
+   .error(function(data,status){
+    console.log(data+" "+status);
+}
+
+
+
+HOW TO SEND DATA TO THE DATABASE/API?
+USE $http.post:
+
+HTML:
+
+<div>
+
+  <label>Add text here</label>
+  <input type="text" ng-model="newRule">
+  <button ng-click="addRule()"></button>
+</div>
+
+
+
+SCRIPT:
+
+$scope.newRule="";//
+$scope.addRule=function(){
+$http.post("/api",{newRule:$scope.newRule})//sending data in jason format
+   .success(function(result){
+//saving the new updated result into my list(rules) which is displayed on the page
+         $scope.rules=result;
+          $scope.newRule="";
+   }
+
+   .error(function(data,status){
+        console.log(data);
+ }
+
+
+API:KEY-74ce990344baa910d82e139046caf546

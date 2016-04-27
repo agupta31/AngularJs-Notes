@@ -1,0 +1,75 @@
+Script:
+USING internal sevices $filter
+var myApp=angular.module("myconnector",[]);
+
+myApp.controller("myController",function($scope,$log,$filter){
+     
+$scope.name="akash";
+    
+    $scope.formattedName=$filter("uppercase")($scope.name);
+    
+    console.log($scope.name);
+    console.log($scope.formattedName);
+
+});
+ 
+OUTPUT:
+akash
+AKASH
+
+
+
+
+USING EXTERNAL SERVICE:ngMessages
+used for automatic form validation.
+
+HTML:
+
+   <div id="container">
+<!--  this view has will now be controlled inside the mainController-->
+          <div ng-controller="myController">
+//automatic form validation
+<form name="myForm">
+   <label>
+     Enter text:
+     <input type="text" ng-model="field" name="myField" required minlength="5" />
+    </label>
+    <div ng-messages="myForm.myField.$error" role="alert">
+      <div ng-message="required">You did not enter a field</div>
+      <div ng-message="minlength, maxlength">
+        Your email must be between 5 and 100 characters long
+      </div>
+    </div>
+  </form>
+                 
+          </div>
+         
+    </div>
+    
+
+ <script type="text/javascript" src="https://code.angularjs.org/1.5.0-rc.2/angular.js"></script>
+//include the service path in your script tag
+<script src="https://code.angularjs.org/1.5.0-rc.2/angular-messages.js"></script>
+    
+        <script type="text/javascript" src="angScript.js"></script>
+    
+
+SCRIPT:
+
+var myApp=angular.module("myconnector",["ngMessages"]);//indicate the service you are using
+                                 //angular on seeing this injects the ngMessages object.
+
+myApp.controller("myController",function($scope,$log,$filter){
+     
+$scope.name="akash";
+    
+    $scope.formattedName=$filter("uppercase")($scope.name);
+    
+    console.log($scope.name);
+    console.log($scope.formattedName);
+
+});
+ 
+
+
+

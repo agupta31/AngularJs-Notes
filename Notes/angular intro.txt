@@ -1,0 +1,11 @@
+Angular js-
+
+what is the problem that it is trying to solve?
+
+suppose we want to display something on the page by clicking a button.In a general scenario
+we write code in JS or jquery to attach a click event to the button and then so some
+call back work when it is clicked by getting the element tag and displaying data inside it
+using the inner html property of that element.Imagine if we had hunderds of buttons like 
+that it would result in thousands of lines of code.We use angular js to avoid this problem.
+Angular js uses the concept of model and view where the model is bound to the view and any
+changes in the model will dynamically reflect on the view.Here the view is your html page.

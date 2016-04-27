@@ -1,0 +1,118 @@
+CREATING YOUR OWN SERVICE TO BE USED ACROSS PAGES IN YOUR SPA:
+
+.JS:
+
+ var myApp=angular.module("myConnector",["ngRoute"]);
+
+
+  myApp.config(function($routeProvider){
+        
+      
+      $routeProvider
+      
+            .when("/first",{
+                     templateUrl:"C:/Users/akash/Desktop/ang/main.htm",
+                     controller:"myController"
+                  
+                  
+                  })
+      
+             .when("/second",{
+                 
+                      templateUrl:"C:/Users/akash/Desktop/ang/second.htm",
+                       controller:"secondController"             
+             })
+      
+  });
+
+//creating a service wobject which contains properties and methods
+ myApp.service("myService",function(){
+     var self=this;
+        this.name="akash gupta";
+        this.nameLength=function(){
+             return self.name.length;
+        }
+    
+ })
+
+
+
+
+//injecting the service via dependency injection into myController
+myApp.controller("myController",function($scope,$log,myService){
+
+   //using myservice to assign a variable name.This illustrates the functionality
+    //of services which can be used by multiple pages in SPA.
+
+     $scope.name=myService.name;
+    //watching name so that whenever its value changes my nameservice.name gets updated
+    //inside this controller it reflects across all pages
+
+    $scope.$watch("name",function(){
+         myService.name=$scope.name;
+    })
+  
+     
+})
+
+myApp.controller("secondController",function($scope,$log,$routeParams,myService){
+    //using service in this page as well
+    $scope.name=myService.name;
+    
+    //watching name so that whenever its value changes my nameserice.name gets updated
+    //inside this controller it reflects across all pages
+    $scope.$watch("name",function(){
+        myService.name=$scope.name;
+    })
+    
+
+})
+
+
+HTML:index.htm
+
+<!doctype html>
+<!-- binding this entire html view to the variable myApp-->
+<html lang="en" ng-app="myConnector">
+<head>
+
+   <title>This is a javascript page</title>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+   
+         
+         
+</head>
+
+<body>
+        <nav>
+         
+          <a href="#/first">Main Page</a>
+            <a href="#/second">Second page</a>
+        </nav>
+     <div id="container">
+           
+          <div ng-view></div>
+    </div>
+    
+<script type="text/javascript" src="https://code.angularjs.org/1.5.0-rc.2/angular.js"></script>
+<script type="text/javascript" src="https://code.angularjs.org/1.5.0-rc.2/angular-route.min.js"></script>
+
+        <script type="text/javascript" src="angScript.js"></script>
+    
+       
+       
+</body>
+  
+</html>
+
+
+HTML:second.htm:
+
+h1>This is the second page</h1>
+<input type="text" ng-model="name">
+
+
+HTML:main.htm:
+
+h1>This is the main page</h1>
+<input type="text" ng-model="name">

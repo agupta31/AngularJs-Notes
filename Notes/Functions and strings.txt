@@ -1,0 +1,32 @@
+var myApp=angular.module("myconnector",[]);
+myApp.controller("myController",function($scope){
+    
+
+});
+//we declare a function
+var searchPeople=function(firstname,lastname,age){
+    
+    return "john doe";
+}
+//when we print this function this returns the entire function as a string.So javascript
+//parses the function as if it was a string.
+console.log(searchPeople);
+//when we do this we see that angular creates an array with the given fields.
+console.log(angular.injector().annotate(searchPeople));
+
+OUTPUT 1:
+function(firstname,lastname,age){
+    
+    return "john doe";
+}
+
+OUTPUT 2:
+["firstname","lastname","age"]
+
+
+HOW EXACTLY DOES ANGULAR DO DEPENDENCY INJECTION?
+
+when angular sees a function($scope) like this then it parses it as ["$scope"] as
+seen above.As soon as angular sees $scope it realises that this is the object $scope and
+that it has to inject the $scope object into this place.This is done internally by angular
+and is a very powerful concept.

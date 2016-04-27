@@ -1,0 +1,179 @@
+CUSTOM DIRECTIVES: creating you own directive which wraps a piece of html which you can use over and over again.
+
+INDEX.htm:
+<!doctype html>
+<!-- binding this entire html view to the variable myApp-->
+<html lang="en" ng-app="myConnector">
+<head>
+
+   <title>This is a javascript page</title>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+   
+         
+         
+</head>
+
+<body>
+        <nav>
+         
+          <a href="#/first">Main Page</a>
+            <a href="#/second">Second page</a>
+        </nav>
+     <div id="container">
+           
+          <div ng-view></div>
+    </div>
+    
+<script type="text/javascript" src="https://code.angularjs.org/1.5.0-rc.2/angular.js"></script>
+<script type="text/javascript" src="https://code.angularjs.org/1.5.0-rc.2/angular-route.min.js"></script>
+
+        <script type="text/javascript" src="angScript.js"></script>
+    
+       
+       
+</body>
+  
+</html>
+
+
+MAIN.htm:
+
+<label>Search</label>
+
+<input type="text" value="Doe">
+
+<h3>Search results</h3>
+
+<div class="list-group">
+  <search-result></search-result>
+  
+</div>
+
+
+SECOND.htm:
+<!--
+<h1>This is the second page</h1>
+<input type="text" ng-model="name">-->
+
+//even this is valid syntax. angular js looks at the search-result keyword and replaces the entire div with the template
+(if replace=false) then tempalte goes inside the div tag.
+
+<div search-result></div>
+
+//even this is alllowed.However,to make this available we have to specify this in the restrict property as 
+// restrict:AEC where C is for class.
+<div class="search-result></div>
+
+
+
+
+angScript.js:
+
+var myApp=angular.module("myConnector",["ngRoute"]);
+
+
+  myApp.config(function($routeProvider){
+        
+      
+      $routeProvider
+      
+            .when("/first",{
+                     templateUrl:"C:/Users/akash/Desktop/ang/main.htm",
+                     controller:"myController"
+                  
+                  
+                  })
+      
+             .when("/second",{
+                 
+                      templateUrl:"C:/Users/akash/Desktop/ang/second.htm",
+                       controller:"secondController"             
+             })
+      
+  });
+
+
+
+myApp.controller("myController",function($scope,$log){
+   
+    })
+  
+     
+
+
+myApp.controller("secondController",function($scope,$log){
+   
+      
+    })
+
+
+//creating a custom directive:
+//restricts the template only to elements and not attributes
+  restrict:E 
+   //if we do restrict:AE then both element and attribute will be taken into account.
+//template specifies the html you want to wrap.
+
+replace :true replaces the tag <search-result></search-result> in your main.htm with the template
+//by defualt replace is false which means the template is added inside the  <search-result></search-result> tag.  
+
+
+myApp.directive("searchResult",function(){
+      return {
+template: '<a href="#" class="list-group-item active"><h4 class="list-group-item-heading">Doe,John</h4><p class="list-group-item-text">135,royal drive,piscataway NJ-08854</p</a>',
+          replace:'true'
+    
+            
+      }
+    
+})
+
+//USING templateUrl property instead of template:
+
+myApp.directive("searchResult",function(){
+      return {
+          templateUrl:"C:/Users/akash/Desktop/ang/searchRes.htm",//this url refers to a html page where my template has been kept.
+          replace:'true'
+    
+            
+      }
+    
+})
+
+VERY IMP: The model for the page where the directive is used is also the model for that directive.The directive was able to access its
+parent's scope and its parent is the main.htm page.In layman terms the controller for the main.htm is also the controller for the 
+directive.
+
+
+
+EXAMPLE:
+myApp.controller("myController",function($scope,$log){
+     
+   //this scope is available to the directive which is the child of the main.htm page. 
+      $scope.name="akash gupta";
+      $scope.address="12002 diploma drive";
+   
+    })
+  
+     
+
+
+myApp.controller("secondController",function($scope,$log){
+    //this scope is available to the directive which is the child of the second.htm page.
+         $scope.name="badhrel";
+         $scope.address="bagnan";
+    })
+
+
+myApp.directive("searchResult",function(){
+      return {
+          templateUrl:"C:/Users/akash/Desktop/ang/searchRes.htm",
+          replace:'true'
+    
+            
+      }
+    
+})
+
+
+
+

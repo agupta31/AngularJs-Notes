@@ -1,0 +1,260 @@
+COMMON DIRECTIVE:
+
+
+NG-IF:
+removes or adds entire pieces of the DOM based on the if condition.
+HTML:
+
+ <div id="container">
+
+          <div ng-controller="myController">
+
+             <div>
+                <label>What is your twitter handle?</label>
+                <input type="text" ng-model="username">
+
+             </div>
+           //this alert will be displayed until the length of the username is 5.
+    //this directive directs the DOM to change the DOM structure based on this condition.
+   //every cycle the digest loop checks the new lenght of the username and updates accordingly
+
+               <div class="alert" ng-if="username.length < characters">
+                Must be 5 characters!
+              </div>
+             <hr/>
+             
+             <h1>twitter handle {{ formattedName() }}</h1>
+
+
+         </div>
+
+    </div>
+
+
+SCRIPT:
+var myApp=angular.module("myConnector",[]);
+
+myApp.controller("myController",["$scope","$filter",function($scope,$filter){
+    
+    $scope.username="";
+    $scope.formattedName= function(){
+    	return $filter("lowercase")($scope.username);
+    }   
+//we define what our character length will be in the model.
+    $scope.characters=5;
+    
+    
+
+}]);
+
+NG-SHOW DIRECTIVE:almost same as ng -if whith the difference that instead of adding and removing pieces of the DOM
+it adds a class to that element where ng-show has been applied then uses css to set its display properties to 'none'.
+ eg:
+script:
+<div class="alert" ng-show="username.length < characters">
+                Must be 5 characters!
+              </div>
+
+AFTER EXECUTION:
+<div class="alert ng-hide" ng-show="username.length < characters">
+                Must be 5 characters!
+              </div>
+
+css:
+.alert ng-hide{
+display:none;
+}
+
+NG-HIDE-same as ng-show.Does the opposite thing as ng-show.
+
+
+NG-CLASS-adds the custom class to that element based on the condition defined.
+EXAMPLE:
+
+ <div id="container">
+
+          <div ng-controller="myController">
+
+             <div>
+                <label>What is your twitter handle?</label>
+                <input type="text" ng-model="username">
+
+             </div>
+  //adds these customs classes when the condtion is met and the DOM is updated according to these directives.
+
+            <div class="alert" ng-class="{'alert-warning':username.length<characters,
+              'alert-danger':username.length===characters,'alert-info':username.length>characters}">
+                Must be 5 characters!
+              </div>
+             <hr/>
+             
+             <h1>twitter handle {{ formattedName() }}</h1>
+
+
+         </div>
+
+
+
+
+EXAMPLE:YOU CAN ADD NESTED DIRECTIVES
+ <div id="container">
+
+          <div ng-controller="myController">
+
+             <div>
+                <label>What is your twitter handle?</label>
+                <input type="text" ng-model="username">
+
+             </div>
+
+            <div class="alert" ng-class="{'alert-warning':username.length<characters,
+              'alert-danger':username.length===characters,'alert-info':username.length>characters}">
+                
+            //nested directives within another directive  
+                  <div ng-show="username.length<characters">length is less than 5 characters</div>
+
+                  <div ng-show="username.length===characters">you finally got it correct</div>
+
+                  <div ng-show="username.length>characters">length:greater than 5</div>
+
+
+              </div>
+             <hr/>
+             
+             <h1>twitter handle {{ formattedName() }}</h1>
+
+
+         </div>
+
+    </div>
+
+
+
+
+
+NG-REPEAT DIRECTIVE:VERY USEFUL FOR PULLING DATA FROM A DATABASE:The ng-repeat directive instantiates a template once per
+item from a collection.Each template instance gets its own scope where the given loop variable is set to the current 
+collection item and $index is set to the item index or key.
+
+It lets me create multiple elements inside the HTML for a particular collection.
+You can have other elements or directives inside the particular li element shown below.
+
+HTML:
+<div ng-controller="myController">
+
+             <div>
+                <label>What is your twitter handle?</label>
+                <input type="text" ng-model="username">
+
+             </div>
+
+            <div class="alert" ng-class="{'alert-warning':username.length<characters,
+              'alert-danger':username.length===characters,'alert-info':username.length>characters}">
+
+
+                  <div ng-show="username.length<characters">length is less than 5 characters</div>
+
+                  <div ng-show="username.length===characters">you finally got it correct</div>
+
+                  <div ng-show="username.length>characters">length:greater than 5</div>
+
+
+              </div>
+             <hr/>
+             
+             <h1>twitter handle {{ formattedName() }}</h1>
+
+             <div>
+                  <h1>Rules</h1>
+                   <ul>
+//ng-repeat will repeat the element for each item in the list.This acts like a for in loop where the variable
+//rule is used to loop through the array 'rules'.
+                     <li ng-repeat="rule in rules">{{rule.rulename}}</li>
+
+                   </ul>
+                      
+
+             </div>
+
+
+         </div>
+
+SCRIPT:
+
+var myApp=angular.module("myConnector",[]);
+
+myApp.controller("myController",["$scope","$filter",function($scope,$filter){
+
+   $scope.list=[
+                 { 
+                  name:"akash",
+                  age:21,
+
+                 },
+ 
+                  {
+                  name:"nsdkd",
+                  age:25,
+
+                 },
+                  { 
+                  name:"jkm",
+                  age:31,
+
+                 }
+   ]
+}
+
+NG-CLICK: CLICK DIRECTIVE:
+ <div id="container">
+
+          <div ng-controller="myController">
+
+           <label>This is clickable button</label>
+           <button value="clickMe" ng-click="eventClick()">Click me</button>
+
+
+         </div>
+
+    </div>
+    
+SCRIPT:
+var myApp=angular.module("myConnector",[]);
+
+myApp.controller("myController",["$scope",function($scope){
+    $scope.eventClick=function(){
+      alert("hi you clicked me");
+}
+
+}
+
+
+
+
+NG-BIND:It does the same work as {{expression}}.The only diff is that {{exp}} is less verbose.So ng-bind tells
+angular to replace the text inside that particular element to the value of a given expression and also to update
+the text when that value changes.
+It is better to use ng-bind if a template is displayed by the browser in its raw state before angular compiles it.
+ng-bind solves this problem because it hides the template until angular compiles it.
+HTML:
+ <div id="container">
+
+          <div ng-controller="myController">
+           
+          <label>Type your name here</label>
+           <input type="text" ng-model="myName">
+           <h1 ng-bind="myName"></h1>
+
+         </div>
+
+
+    </div>
+
+
+SCRIPT:
+var myApp=angular.module("myConnector",[]);
+
+myApp.controller("myController",["$scope",function($scope){
+    
+   $scope.myName="";
+}]);

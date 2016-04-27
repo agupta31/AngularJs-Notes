@@ -1,0 +1,58 @@
+TRANSCLUSION: Including one document inside another.Placing a copy of one document inside another document.
+
+
+
+
+MAIN.HTM:
+<label>Search</label>
+
+<input type="text" value="Doe">
+
+<h3>Search results</h3>
+
+<div class="list-group" >
+    <search-results people-object="person" get-full-details-obj="getFullDetails(aperson)"
+                ng-repeat="person in people">
+    
+       hey whats up? //if I want to include this in my view then I have to use the transclude element of angular js
+                    //which lets me include this piece of document inside the directive's template.
+    </search-results>
+
+
+</div>
+
+SEARCHRES.HTM:- directive's template
+
+<a href="#" class="list-group-item active">
+     <h4 class="list-group-item-heading">{{peopleObject.name}}</h4>
+     <p class="list-group-item-text"> 
+          
+       {{getFullDetailsObj({aperson:peopleObject})}}
+         
+     </p>
+     <ng-transclude></ng-transclude>//use this tag to inlcude the above text.Angular js will insert the document inside this tag
+    
+</a>
+
+
+.JS:
+myApp.directive("searchResults",function(){
+    
+       return {
+           
+              templateUrl:"C:/Users/akash/Desktop/ang/searchRes.htm",
+              replace:true,
+           
+                scope: {
+                     peopleObject:"=",
+                     getFullDetailsObj:"&"
+                      },
+            
+                transclude:true //make this property true in your JS file.
+               
+              }
+     
+});
+
+
+

@@ -1,0 +1,73 @@
+DIRECTIVES:An instruction to tell angular js to manipulate a piece of the DOM.eg, hide this,create this,
+add a class etc.
+
+
+EXAMPLE OF A DIRECTIVE:
+<div id="container">
+
+          <div ng-controller="myController">
+
+             <div>
+                <label>What is your twitter handle?</label>
+               //ng-model:this is what binds this element to the scope inside the model.
+               //so any change here will reflect in the model and vice-versa
+                <input type="text" ng-model="username">
+
+             </div>
+             <hr/>
+             <h1>twitter handle {{ username }}</h1>
+
+
+         </div>
+
+    </div>
+    
+SCRIPT:
+var myApp=angular.module("myConnector",[]);
+
+myApp.controller("myController",["$scope","$filter",function($scope,$filter){
+    
+    $scope.username="";
+   
+
+}]);
+
+
+
+TWO WAY DATA BINDING:
+<div id="container">
+
+          <div ng-controller="myController">
+
+             <div>
+                <label>What is your twitter handle?</label>
+               //ng-model:this is what binds this element to the scope inside the model.
+               //so any change here will reflect in the model and vice-versa
+                <input type="text" ng-model="username">
+
+             </div>
+             <hr/>
+             <h1>twitter handle {{ formattedName() }}</h1>
+
+
+         </div>
+
+    </div>
+    
+SCRIPT:
+var myApp=angular.module("myConnector",[]);
+
+myApp.controller("myController",["$scope","$filter",function($scope,$filter){
+    
+    $scope.username="";
+//converting the username into lowercase
+   $scope.formattedName= function(){
+    	return $filter("lowercase")($scope.username);
+    }
+
+
+}]);
+So any change in the textbox(view) will chane the model($scope.username) then any change in the model($formattedName)
+gets reflected in the view {{formattedName()}}.This is TWO WAY DATA BINDING.
+
+

@@ -1,0 +1,35 @@
+WHY MINIFY?reduces space -good for production release.
+
+var myApp=angular.module("myConnector",[]);
+
+myApp.controller("myController",function($scope,$log){
+     
+console.log($scope);
+console.log($log);
+    
+});
+ 
+//minified version of the above controller function.Howver,if you run this instead of the
+//above function you will get injector errors .This is because angular sees parameters
+o and l inside the function and doesn't know what it is.The minifier has changed the name
+$scope to o and $log to l.However,angular looks for the $scope keyword to inject the
+$scope object.Sicne it doesn;t find one it throws an error.
+myApp.controller("myController",function(o,l){console.log(o),console.log(l)});
+
+
+HOW TO SOLVE THE ABOVE ERROR?
+//write your controller function like this:
+
+myApp.controller("myController",["$scope","$log",function($scope,$log){
+  console.log($scope);
+]);
+
+the minifed version of the above code will be:
+
+myApp.controller("myController",["$scope","$log",function(o,l){console.log(o)}]);
+
+Here angular does not minify anything that is inside quotes so angular understands that
+the o is mapped to $scope and $log to l.This will work.Howver,make sure the order of the 
+variables outside the function is the same as the orer of the function parameters.
+
+

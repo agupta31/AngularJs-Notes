@@ -1,0 +1,35 @@
+DEPENDENCY INJECTION:passing objects to functions rather than defining them inside them.
+
+WHY USE DEPENDENCY INJECTION?
+
+var person=function(fstname,lstname){
+   this.firstname= fstname;
+    this.lastname=lstname;
+}
+
+
+function logPerson(){
+//creating a john object inside a function causes dependency issues.The object creation
+//is now dependent on the function logPerson().This is not desirable so we use dependency
+//injection.
+     var john=new person("john","doe");
+     console.log(john);
+ }
+ logPerson();
+
+
+CODE USING DEPENDENCY INJECTION:
+var person=function(fstname,lstname){
+   this.firstname= fstname;
+    this.lastname=lstname;
+}
+
+ function logPerson(personObj){
+  console.log(personObj);
+ }
+//creating objects outside the function so no dependency.
+//rather we are injecting the dependency into the function
+var john=new person("john","doe")
+ logPerson(john);
+
+

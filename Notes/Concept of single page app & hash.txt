@@ -1,0 +1,79 @@
+
+CONCEPT OF SINGLE PAGE APPS AND HASH:
+
+Let us see what hash is used for:
+HTML:
+<body>
+<a href="#bookmark">Go to Bookmark</a>
+
+
+<p><a id="bookmark"><strong>This is a bookmark</strong></a>McMahon gained significant traction when 
+he hired AWA talent Hulk Hogan, who had achieved popularity 
+outside of wrestling, notably for his appearance in the film Rocky III.[22] 
+McMahon signed Roddy Piper as Hogan's rival, and then shortly afterward Jesse Ventura as an announcer. 
+Other wrestlers joined the roster, such as Jimmy Snuka, Don Muraco, 
+The Iron Sheik, Nikolai Volkoff, Junkyard Dog, Paul Orndorff, Greg Valentine and Ricky Steamboat.
+ Many of the wrestlers who would join later were former AWA or NWA talent.
+
+</body>
+ 
+We are defining an anchor tag with an id bookmark and we are giving its link at the top(<a href="#bookmark">Go to Bookmark</a>).
+So when the user clicks on this link it takes him to that bookmark.We can use this concept to design SPA's.How ?
+
+
+We can physically check the value of this bookmark using javascript event handlers:
+
+SCRIPT:
+window.addEventListener('hashchange',function(){
+   //gives the value of the hash at that location
+   console.log("hash changed:" + window.location.hash);
+});
+
+Whenever we change the value of the hash in the url of the page it logs the changed value.So this hash value is nothing but a string 
+and we can do anything with it.for eg:
+we can do this:
+file:///C:/Users/akash/Desktop/angularJs/index.htm#/bookmark/1
+file:///C:/Users/akash/Desktop/angularJs/index.htm#/bookmark/2
+file:///C:/Users/akash/Desktop/angularJs/index.htm#/bookmark/3
+
+and then we can use the value of these hash to write logic for them individually.Lets see how that works:
+
+.JS:
+
+window.addEventListener('hashchange',function(){
+   
+   if(window.location.hash==="#/bookmark/1")
+    console.log("this is bookmark 1");
+
+   if(window.location.hash==="#/bookmark/2")
+    console.log("this is bookmark 2");
+
+   if(window.location.hash==="#/bookmark/3")
+      console.log("this is bookmark 3");
+});
+ 
+
+Angular incorporates this logic when designing SPA's.The browser makes a single HTTP request for the whole page and based on the
+values provided in the hashchange function it runs some logic.
+
+In short angular js has the utility to grab whatever is in the hash!!This is achieved by its built in object $location.path() which
+gives the value of the hash.
+
+url-file:///C:/Users/akash/Desktop/angularJs/index.htm#/dhdld
+file:///C:/Users/akash/Desktop/angularJs/index.htm#hahah
+
+
+.JS:
+var myApp=angular.module("myConnector",[]);
+
+myApp.controller("myController",["$scope","$filter","$location",
+  function($scope,$filter,$location){
+//angular object location has a method called path which stores the value of the hash.
+   console.log($location.path());
+                
+    }]);
+
+OUTPUT:
+/dhdld
+hahah
+

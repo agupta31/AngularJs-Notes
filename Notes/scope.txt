@@ -1,0 +1,50 @@
+SCOPE:It is an object that is passed to the controller function using dependency injection.
+Middlepiece between the view and controller.Scope defines the data that 
+will go back and forth between the model(the function defined inside the controller)
+and the view.
+
+Every application has a single root scope.Scopes provide separation between the model
+and the view via a mechanism of watching the model for changes.
+
+Scope is an object that refers to the application model.It is an execution context for 
+expressions.They mmic the DOM structure of the application.Scopes can watch expressions
+and propagate events.
+
+
+Scopes provide API''s ($watch) to observe any model mutations.
+Scopes provide API's ($apply) to propagate any model changes through the system into the
+view from outside of the angular realm(controllers,services,angular event handlers)
+
+
+Scopes are a link between the application controller and the view.during the template
+linking phase the directives set up a $watch expression int he scope which allows the
+directives to be notified of any property changesm which in turn enables the directive to
+render the updated value to the DOM.
+
+Whatever I do inside the scope will be available in the view.So if you do $scope.name="akash".This name will be
+available in the view inside the exrpession {{name}}.It is assumed that 'name' is inside the $scope object.
+
+
+//the view to be controller
+div id="container">
+<!--  this view has will now be controlled inside the mainController-->
+          <div ng-controller="myController">
+          
+           <h1>hello world</h1>
+          </div>
+         
+</div>
+
+
+script:
+
+var myApp=angular.module("Myconnector",[]);
+myApp.controller("myController",function($scope){
+    
+    $scope.name="akash";
+    $scope.age=21;
+    
+    $scope.getDetails=function(){
+        console.log(this.name+" "+this.age);
+    }
+});

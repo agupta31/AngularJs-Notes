@@ -1,0 +1,16 @@
+NORMALIZATION:to make consistent to a standard.In layman terms we have a variety of things and we change all of them to make them 
+consistent to the same standard.
+
+eg:
+HTML:
+<search-result result-link-ref="#"></search-result>
+
+here <search-result></search-result> is a custom directive
+.JS:
+we cannot access the attribute result-link-ref inside JS like this:
+
+var result-link-ref="#"
+:you will get an error because - in js is minus.
+
+So what angular JS does is that it converts the above attribute to a set standard(normalizes it) to what is known as Camel casing.
+As a result of this we can use var resultLinkRef="#" in our script file and it won't throw an error.

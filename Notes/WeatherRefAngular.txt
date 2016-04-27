@@ -1,0 +1,182 @@
+SIMPLE WEATHER APP :SHOWS ROUTING,SERVICES AND CUSTOM DIRECTIVES
+
+HTML:
+<!doctype html>
+<!-- binding this entire html view to the variable myApp-->
+<html lang="en">
+<head>
+
+   <title>This is a javascript page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="app.css">
+   
+         
+         
+</head>
+
+<body ng-app="forecastApp" >
+    
+    <div ng-view></div>
+    
+   
+
+<script   src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+    
+<script type="text/javascript" src="https://code.angularjs.org/1.5.0-rc.2/angular.js"></script>
+    
+<script type="text/javascript" src="https://code.angularjs.org/1.5.0-rc.2/angular-route.min.js"></script>
+    
+          <script type="text/javascript" src="app.js"></script>
+       
+</body>
+  
+</html>
+
+
+
+
+.JS:
+var myApp=angular.module("forecastApp",["ngRoute"]);
+
+myApp.config(function($routeProvider){
+    
+        $routeProvider
+        
+            .when("/",{
+               templateUrl:"displayForm.htm",
+               controller:"controller_1"
+        }).
+        
+            when("/forecast",{
+               templateUrl:"forecast.htm",
+                controller:"controller_2"
+        }).
+            when("/forecast/:num",{
+                 templateUrl:"forecast.htm",
+                 controller:"controller_2"
+        })     
+});
+
+
+myApp.service("myService",function($http){
+    this.city="";
+    this.wthrAPI=function(city,cnt){
+   return  $http({
+           method:"GET",
+             url:"http://api.openweathermap.org/data/2.5/forecast/daily?q="+city+"&cnt="+cnt+"&appid=74ce990344baa910d82e139046caf546"
+          
+    });
+    
+}
+       
+});
+
+myApp.controller("controller_1",function($scope,myService){
+        $scope.city=myService.city;
+         $scope.$watch(function(){
+             myService.city=$scope.city;
+         });
+     
+//         $("#myButton").on("click",function(){
+//               $("body").css("background","green");
+//         });
+    //using javascript for DOM manipulation
+          document.getElementById("myButton").addEventListener("click",function(){
+               document.querySelector(".container").style.background="green";
+          });
+        
+});
+
+myApp.controller("controller_2",function($scope,myService,$routeParams){
+
+        $scope.days= $routeParams.num || "2";
+    
+        myService.wthrAPI(myService.city,$scope.days).success(function(response){
+            console.log(response);
+               $scope.results=response; 
+            
+        }); 
+    
+        $scope.newTemp=function(temp){
+         
+          return Math.round(temp-273);
+         }  
+});
+
+myApp.directive("myDirective",function(){
+                
+        return{
+            
+               templateUrl:"weatherDir.htm",
+               replace:true,
+               scope:{
+                      resultObj:"=",
+                      tempFunc:"&"
+                   
+                     },
+                link:{
+                      
+                  }
+            
+        }
+    
+});
+
+
+
+displayForm.htm:
+
+
+<h2>Forecast Page</h2>
+
+
+   <div class="container">
+
+       <div class="row">
+          <div class="formDiv">
+         
+                  <div class="form-group">
+              
+                     <input type="text" class="form-control" ng-model="city">
+              
+                   </div>
+              
+                <div class="form-group">
+                <a href="#/forecast" class="btn btn-primary">Get Forecast</a>
+              </div>
+              
+               <div clas="form-group">
+                 <button id="myButton" class="btn btn-success btn-sm">Change Color</button>
+              </div>
+              
+         </div>
+       
+       </div>
+
+
+</div>
+
+
+
+
+
+forecast.htm:
+<div class="container">
+   <my-directive ng-repeat="obj in results.list" result-obj="obj" temp-func="newTemp(degK)"></my-directive>       
+
+</div>
+
+
+//directive template
+weatherDir.htm:
+
+<div class=row>
+    <div class="col-md-3">
+
+        <h3>daytime temp: {{tempFunc({degK:resultObj.temp.day})}}&deg; </h3>
+        <h3>night time temp:{{tempFunc({degK:resultObj.temp.night})}}&deg;</h3>
+        <h3>pressure:{{resultObj.pressure}}</h3>
+
+    </div> 
+    
+</div>    

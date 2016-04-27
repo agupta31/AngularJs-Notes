@@ -1,0 +1,138 @@
+COMPILE AND LINK:In comp science when building code a compiler converts the code into a lower level machine readable language.
+The linker then generates a file which interacts with your computer will actually interact with.
+
+In angular js this is not exactly what they mean.
+
+We do compile in angular js to change a part of the html before it is outputed on the page.
+
+post-link: we use link to grab a piece of a current instance of the directive ,check the scope and do some action before it is outputted
+to the page. 
+pre link-this parses the directives from top to bottom
+post link-this parses the directives from bottom up-this is safer.
+
+
+
+
+HOW AND WHERE TO USE THEM:
+
+.JS:
+myApp.controller("myController",function($scope,$log){
+    
+      $scope.people=[
+          {
+          
+              name:"akash",
+              schoolName:"xavier's",
+              company:"infosys",
+              age:26
+              
+          },
+    
+         {
+          
+              name:"utpal",
+              schoolName:"james",
+              company:"TCS",
+              age:23
+              
+          },
+         {
+          
+              name:"shraboni",
+              schoolName:"la mart",
+              company:"cognizant",
+              age:26
+              
+          }
+    ]
+    
+    
+    $scope.getAddress=function(person){
+          return person.schoolName +" "+person.company+" "+person.age;
+    }
+    
+    
+    })
+  
+     
+
+
+myApp.controller("secondController",function($scope,$log){
+   
+        $scope.people={
+                   name:"badhrel",
+                   address:"bagnan in howrah ",
+                   city:"kolkata",
+                  state:"west bengal",
+                  zip:28262
+                  
+        };
+    
+           $scope.getAddress=function(person){
+            return person.city+" "+person.state+" "+person.zip;
+       }
+   
+    })
+
+
+myApp.directive("searchResult",function(){
+      return {
+          templateUrl:"C:/Users/akash/Desktop/ang/searchRes.htm",
+          replace:'true',
+          scope:{
+               personObject:"=",
+               personAddress:"&"
+              
+          } ,
+          compile:function(elem,attr){
+          
+              console.log("compiling..");
+            //removing the attribute class from the view associated with this directive
+              elem.removeAttr("class");
+              console.log(elem.html());
+          
+          //we have to understand that every time we are running ng-repeat there is create a different instance of this directive
+   // with its own scope so we can use post linking to grab a piece of code fom the model or the view attached with that current instance
+   //of the directive and change it on the fly before the view is rendered on the page.
+               return{
+              //scope here is the isolate scope,elements is the view   
+                   post:function(scope,elements,attrs){
+                             console.log("post linking...");
+                              if(scope.personObject.name==="akash")
+                                  elements.removeAttr("class");
+           
+                                   }
+          
+                 }
+      }
+    
+            
+      }
+    
+});
+
+
+
+searchRes.htm:
+
+ <a href="#" class="list-group-item active">
+     <h4 class="list-group-item-heading">{{personObject.name}}</h4>
+     <p class="list-group-item-text"> 
+         
+         {{personAddress({aperson:personObject})}} 
+     
+     </p>
+</a>
+
+
+
+SHORTHAND NOTATION FOR LINK:
+ 
+link:function(scope,elements,attrs){
+                             console.log("post linking...");
+                              if(scope.personObject.name==="akash")
+                                  elements.removeAttr("class");
+           
+                                   }
+
+ 

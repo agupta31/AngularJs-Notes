@@ -1,0 +1,209 @@
+CREATING DIRECTIVES: a directive conatins a template which can be used repeatedly by diffrent pages.
+
+WITHOUT USING ISOLATED SCOPE:
+STEPS:
+
+create your directive
+myApp.directive("myDirective",function(){});
+Include a template in your directive using the templateUrl property.
+
+   templateUrl:"http://.......";
+Call the directive in the page where you want use the template of the directory.
+
+myPage.htm:
+
+  <my-directive></my-directive>
+
+Point to note: The directive will have the same controller as the the page where you are calling it.So it will have access to the
+variables and functions assigned inside the model.
+
+
+
+
+
+USING ISOLATED SCOPE:CREATE A SCOPE INSIDE YOUR DIRECTIVE AND ATTACH IT WITH THE SCOPE OF THE PAGES WHICH USES YOUR DRIECTIVE:
+
+STEP 1:
+Myapp("myController",function(){
+ //creating a people object
+
+        $scope.people={
+                   name:"akash",
+                   age:21
+
+           };
+  
+});
+
+myApp.directive("myDirective",function(){
+
+         return {
+                 templateUrl:"http.....",
+             //creating isolated scope which will connect to the scope of the pages which call this directive
+                 scope:{
+                        
+
+                       }
+
+ }
+
+
+});
+
+STEP 2:GO TO THE PAGE WHERE YOU WANT TO INLCUDE THIS DIRECTIVE:
+
+main.htm:
+
+//create a attribute which will point to the people object in its scope.
+   <my-directive people-object="people"></my-directive>
+
+
+GO TO THE DIRECTIVE: GO TO THE SCOPE AND ADD THE  PEOPLE OBJECT YOU CREATED ABOVE TO ITS SCOPE USING THE "=" OPERATOR WHICH PROVIDES
+A TWO WAY BINDING
+
+myApp.directive("myDirective",function(){
+     
+             scope{
+                 peopleObject:"="
+                  
+              }
+
+});
+
+
+STEP 3:CALL THIS peopleObject INSIDE THE TEMPLATE USING INTERPLOLATION:
+
+myDirectiveTemplate.htm:
+
+<a href="#" class="list-group-item active">
+     <h4 class="list-group-item-heading">{{peopleObject.name}}</h4>
+     <p class="list-group-item-text"> 
+          
+         {{peopleObject.age}}
+         
+     </p>
+    
+</a>
+
+STEP 4: THIS TEMPLATE WILL BE RENDERED BY THE PAGE AND DISPLAYED ON ITS VIEW WHICH WILL BE RENDERED BY NG-VIEW TO THE MAIN LAYOUT.
+
+
+
+
+
+
+
+CALLING A FUNCTION IN YOUR PAGE'S SCOPE IN YOUR DIRECTIVE'S SCOPE:
+
+
+STEP 1:CREATE A FUNCTION INSIDE YOU MODEL:
+
+Myapp("myController",function(){
+ //creating a people object
+
+        $scope.people={
+                   name:"akash",
+                   age:21,
+                   company:"infosys"
+
+           };
+        $scope.getFullDetails=function(people){
+
+              return people.name+people.age+people.company;
+
+         };
+  
+});
+
+
+
+STEP 2:GO TO YOUR PAGE THAT IS ATTACHED TO THIS CONTROLLER-ADD ANOTHER ATTRIBUTE WHICH WILL POINT TO THIS FUNCTION
+
+main.htm:
+<my-directive people-object="people" get-full-details-obj="getFullDetails(apeople)"></my-directive>
+
+
+
+STEP 3:INCLUDE THIS ATTRIBUTE INSIDE THE ISOLATED SCOPE BY USING & SIGN FOR FUNCTIONS:
+  
+myApp.directive("myDirective",function(){
+     
+             scope{
+                 peopleObject="=",
+                 getFullDetailsObj:"&"
+                  
+              };
+
+});
+
+
+
+STEP 4:GO TO YOUR TEMPLATE AND INTERPOLATE THIS FUNCTION PROPERTY:
+myDirectiveTemplate.htm:
+
+<a href="#" class="list-group-item active">
+     <h4 class="list-group-item-heading">{{peopleObject.name}}</h4>
+     <p class="list-group-item-text"> 
+          
+         {{getFullDetails({apeople:peopleObject})}}
+         
+     </p>
+    
+</a>
+
+
+
+
+
+
+USING NG-REPEAT INSIDE YOUR DIRECTIVE:WITHOUT  ISOLATED SCOPE
+
+
+
+STEP 1: IF YOU HAVE MULTPILE OBJECTS DEFINED INSIDE YOUR CONTROLLER YOU CAN ITERATER OVER IT USING NG -REPEAT
+
+myApp.controller("myController",function(){
+     $scope.person=[
+
+                { 
+                 name:"akash",
+                 age:21
+                },
+                
+                {
+                 name:"badhrel",
+                 age:"29"
+                },
+                
+                {
+                 name:"polsns",
+                 age:"187"
+                }
+
+             
+]
+
+
+});
+
+
+
+STEP 2:GO TO THE PAGE ATTACHED TO THIS CONTROLLER-ADD AN EXISTING DIRECTIVE NG-REPEAT
+
+MAIN.HTM:
+
+//create a attribute which will point to the people object in its scope.
+   <my-directive  ng-repeat="person in people"></my-directive>
+
+
+ 
+STEP 4:INTERPOLATE THE VALUES  INSIDE YOUR TEMPLATE THE TEMPLATE
+     <a href="#" class="list-group-item active">
+     <h4 class="list-group-item-heading">{{person.name}}</h4>
+     <p class="list-group-item-text"> 
+          
+       {{person.schoolName+" "+person.company+" "+person.age}}
+         
+     </p>
+    
+</a>

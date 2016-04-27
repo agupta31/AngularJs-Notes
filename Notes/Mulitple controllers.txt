@@ -1,0 +1,45 @@
+A view can have multiple controllers attached to it which specifically work on that part of the view to which the controller has been
+attached.Each controller is separate form the other and has it's own scope object.Lets see this below:
+
+HTML:
+
+ <div id="container">
+        //controller 1
+          <div ng-controller="myController">
+                
+               <h1>{{ name}} </h1>
+             
+                
+          </div>
+         //controller 2
+          <div ng-controller="secondController">
+                
+               <h3>{{ name}} </h3>
+             
+                
+          </div>
+                
+         </div>
+         
+    </div>
+
+
+
+
+SCRIPT:
+
+var myApp=angular.module("myConnector",[]);
+//this controller has its own version of the $scope object
+myApp.controller("myController",["$scope","$filter",function($scope,$filter){
+
+                
+   $scope.name="akash";
+    
+
+}]);
+
+//this has its own version so name here is the property of its own scope object and has nothing to do with the name property above.
+myApp.controller("secondController",["$scope",function($scope){
+
+    $scope.name="gupta";
+}]);
