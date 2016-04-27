@@ -1,0 +1,27 @@
+INCEPTION OF SPA'S-it is based ont he concept of XHR(xml http request) which allows you fetch data from the server
+without the need to refresh the page.
+SPA gives a desktop type of feel with the browser.
+gmail is a perfect example of a SPA.When you change the view under the inbox tabs the page does not refresh and renders
+the view on the page.Similarly when you compose a mail and send it the browser does not refesh.All this is done by
+XHR.
+
+FEATURES OF SPA:
+HTTP communication using XHR--->you can write your own XHR in JS but it is verbose and takes up lots of code.
+DOM manipulation becomes easy
+State and routing
+
+Load the page once and download all contents.Then provide access to different parts of the contents using routing
+with desired parts of the content kept in local files.
+___________________________________________________________________________
+   SPA
+
+     -------                         ------------                                                  
+      VIEW      ----------------->    VIEW                                                               
+     -------                         ------------
+                                        
+ 
+____________________________________________________________________________
+
+As the diagram above shows in a SPA.We load the main page only once and then we  load different
+views on that page on the fly.Routing takes us to a particular view which is displayed on the main page
+and XHR is used to load any data required by this view from the server.
