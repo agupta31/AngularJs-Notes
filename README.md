@@ -1,2 +1,2 @@
 # AngularJs-Notes
-Extremely helpful notes for anyone whishing to start learning angularJs.
+Extremely helpful notes for anyone wishing to start learning angularJs.
